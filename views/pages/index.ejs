@@ -4,32 +4,8 @@
 	<h1><%= title %></h1>
 </head>
 <body>
-	<span><%= message %></span>
-	<div id="selector">
-		<p><button id="Lorem">Lorem Ipsum</button></p>
-		<p><button id="Nonsense">Nonsense</button></p>
-	</div>
-
-	<script>
-		const container = document.getElementById('selector');
-		
-		const lorem_xhr = new XMLHttpRequest();
-		const lorem = document.getElementById('Lorem');
-		lorem.onclick = function() {
-			container.innerHTML = lorem_xhr.responseText;
-		}
-		lorem_xhr.open('get', '/lorem');
-		lorem_xhr.send();
-
-		const nonsense_xhr = new XMLHttpRequest();
-		const nonsense = document.getElementById('Nonsense');
-		nonsense.onclick = function() {
-			container.innerHTML = nonsense_xhr.responseText;
-			
-		}
-		nonsense_xhr.open('get', '/nonsense');
-		nonsense_xhr.send();
-	</script>	
+	<p><%= message %></p>
+	<p>Interested in viewing some first pages of books? <a href="/about">Click here!</a></p>
 	<%- include ("../partials/footer.ejs") %>
 </body>
 </html>

@@ -10,16 +10,16 @@ app.use(bodyParser.json())
 
 app.set('view engine', 'ejs');
 
-app.get('/about', (req, res) => res.render('pages/about', { title: 'About', message: "my_javascript_variable" }));
-app.get('/lorem', (req, res) => res.render('partials/lorem'));
-app.get('/nonsense', (req, res) => res.render('partials/nonsense'));
+app.get('/about', (req, res) => res.render('pages/about', { title: 'About', message: "Select a book to view the first page!" }));
+app.get('/lotr', (req, res) => res.render('partials/lotr'));
+app.get('/hpatss', (req, res) => res.render('partials/hpatss'));
 
 app.get('/', (req,res) => {
-	var message = 'hello, friend!';
-	var title = 'Hey!';
+	let message = 'hello, friend!';
+	let title = 'Hey!';
 	res.render('pages/index', { title: title, message: message })
 })
-//use let or const (const if we don't expect them to change)
+//let is saying 
 app.post('/', (req,res) => {
 	expected_signature = createSignature(req.body);
 
@@ -31,14 +31,14 @@ app.post('/', (req,res) => {
 		} else {
 			let full_name = 'friend';
 		}
-		var message = 'hello, ' + full_name + '!';
-		var title = 'Hey!';
+		let message = 'hello, ' + full_name + '!';
+		let title = 'Hey!';
+		res.render('pages/index', { title: title, message: message });
 	} else {
-		var message = 'Please be sure to launch this from within Schoology!';
-		var title = 'Oops!';
+		let message = 'Please be sure to launch this from within Schoology!';
+		let title = 'Oops!';
+		res.render('pages/index', { title: title, message: message });
 	}
-
-	res.render('pages/index', { title: title, message: message });
 });
 
 function createSignature(form_data) {
