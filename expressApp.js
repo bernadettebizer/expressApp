@@ -11,30 +11,25 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 
 app.get('/about', (req, res) => res.render('pages/about', { title: 'About', message: "my_javascript_variable" }));
+app.get('/lorem', (req, res) => res.render('partials/lorem'));
+app.get('/nonsense', (req, res) => res.render('partials/nonsense'));
 
-app.all('/', (req,res) => {
-	var oauth_consumer_key = req.body.oauth_consumer_key;
-	var oauth_nonce = req.body.oauth_nonce;
-	var oauth_signature_method = req.body.oauth_signature_method;
-	var oauth_timestamp = req.body.oauth_timestamp;
-	var oauth_version = req.body.oauth_version;
-	var oauth_callback = req.body.oauth_callback;
-	var oauth_signature = req.body.oauth_signature;
+app.get('/', (req,res) => {
+	var message = 'hello, friend!';
+	var title = 'Hey!';
+	res.render('pages/index', { title: title, message: message })
+})
+//use let or const (const if we don't expect them to change)
+app.post('/', (req,res) => {
+	expected_signature = createSignature(req.body);
+
+	console.log(expected_signature,req.body.oauth_signature);
 	
-	var expected_signature = oauth_sign.sign('HMAC-SHA1', 'POST', 'https://10ae4c584e2f.ngrok.io', 
-	{ oauth_callback: oauth_callback
-	  , oauth_consumer_key: oauth_consumer_key
-	  , oauth_nonce: oauth_nonce
-	  , oauth_signature_method: oauth_signature_method
-	  , oauth_timestamp: oauth_timestamp
-	  , oauth_version: oauth_version
-	});
-	
-	if (oauth_signature == expected_signature) {
+	if (req.body.oauth_signature == expected_signature) {
 		if (req.body.lis_person_name_given && req.body.lis_person_name_family) {
-			var full_name = req.body.lis_person_name_given + ' ' + req.body.lis_person_name_family;
+			let full_name = req.body.lis_person_name_given + ' ' + req.body.lis_person_name_family;
 		} else {
-			var full_name = 'friend';
+			let full_name = 'friend';
 		}
 		var message = 'hello, ' + full_name + '!';
 		var title = 'Hey!';
@@ -45,5 +40,21 @@ app.all('/', (req,res) => {
 
 	res.render('pages/index', { title: title, message: message });
 });
+
+function createSignature(form_data) {
+	return oauth_sign.sign(form_data.oauth_signature_method, 'POST', 'https://245d468dc337.ngrok.io', 
+		{
+			lti_message_type: form_data.lti_message_type ,
+			lti_version: form_data.lti_version ,
+			launch_presentation_document_target: form_data.launch_presentation_document_target ,
+			tool_consumer_info_product_family_code: form_data.tool_consumer_info_product_family_code ,
+			tool_consumer_info_version: form_data.tool_consumer_info_version ,
+			ext_lms: form_data.ext_lms ,
+			oauth_callback: form_data.oauth_callback ,
+			user_id: form_data.user_id ,
+			roles: form_data.roles ,
+			launch_presentation_locale: form_data.launch_presentation_locale ,
+		}, "this_is_the_secret");
+}
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
