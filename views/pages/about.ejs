@@ -4,7 +4,31 @@
 	<h1><%= title %></h1>
 </head>
 <body>
-	<span><%= message %></span>
+	<div id="selector">
+	<p><%= message %></p>
+		<p><button id="LotR">Lord of the Rings: the Fellowship of the Ring</button></p>
+		<p><button id="HPatSS">Harry Potter and the Sorcerer's Stone</button></p>
+	</div>
+
+	<script>
+		const container = document.getElementById('selector');
+		
+		const lotr_xhr = new XMLHttpRequest();
+		const lotr = document.getElementById('LotR');
+		lotr.onclick = function() {
+			container.innerHTML = lotr_xhr.responseText;
+		}
+		lotr_xhr.open('get', '/lotr');
+		lotr_xhr.send();
+
+		const hpatss_xhr = new XMLHttpRequest();
+		const hpatss = document.getElementById('HPatSS');
+		hpatss.onclick = function() {
+			container.innerHTML = hpatss_xhr.responseText;
+		}
+		hpatss_xhr.open('get', '/hpatss');
+		hpatss_xhr.send();
+	</script>	
 	<%- include ("../partials/footer.ejs") %>
 </body>
 </html>
