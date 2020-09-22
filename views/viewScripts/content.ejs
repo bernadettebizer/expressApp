@@ -1,0 +1,18 @@
+const container = document.getElementById('selector');
+const lotrXhr = new XMLHttpRequest();
+const lotr = document.getElementById('LotR');
+
+lotr.onclick = function () {
+  container.innerHTML = lotrXhr.responseText;
+};
+lotrXhr.open('get', '/lotr');
+lotrXhr.send();
+
+const hpatssXhr = new XMLHttpRequest();
+const hpatss = document.getElementById('HPatSS');
+
+hpatss.onclick = function () {
+  container.innerHTML = hpatssXhr.responseText;
+};
+hpatssXhr.open('get', '/hpatss');
+hpatssXhr.send();
