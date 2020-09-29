@@ -1,17 +1,22 @@
-const container = document.getElementById('selector');
-const lotrXhr = new XMLHttpRequest();
 const lotr = document.getElementById('LotR');
-const hpatssXhr = new XMLHttpRequest();
 const hpatss = document.getElementById('HPatSS');
 
-lotr.onclick = function () {
-  	container.innerHTML = lotrXhr.responseText;
+lotr.onclick = function() {
+	loadContent('/lotr');
 };
-lotrXhr.open('get', '/lotr');
-lotrXhr.send();
 
-hpatss.onclick = function () {
-	container.innerHTML = hpatssXhr.responseText;
+hpatss.onclick = function() {
+	loadContent('/hpatss');
 };
-hpatssXhr.open('get', '/hpatss');
-hpatssXhr.send();
+
+function loadContent(url) {
+	let container = document.getElementById('selector');
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    	if (this.readyState == 4 && this.status == 200) {
+      		container.innerHTML = xhttp.responseText;
+    	}
+	}
+	xhttp.open("GET", url);
+  	xhttp.send();
+}
